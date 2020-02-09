@@ -21,7 +21,7 @@ public class ArrayList <T>{
 	}
 	
 	public void set(int loc, T val) throws IndexOutOfBoundsException {
-		
+		System.out.println("list.get("+loc+") returning improper value.");
 	}
 	
 	public void remove(int loc) throws IndexOutOfBoundsException {
@@ -31,5 +31,10 @@ public class ArrayList <T>{
 	public boolean contains(T val) {
 		
 		return false;
+	}
+
+	public int size() {
+		
+		return 0;
 	}
 }
