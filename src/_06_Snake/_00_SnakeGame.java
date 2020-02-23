@@ -40,6 +40,9 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 
 	public _00_SnakeGame() {
 		snake = new Snake(new Location(WIDTH / 2, HEIGHT / 2));
+		setFoodLocation();
+		System.out.println(foodLocation.x);
+		System.out.println(foodLocation.y);
 
 		window = new JFrame("Snake");
 		panel = new JPanel() {
@@ -69,7 +72,7 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
 
-		setFoodLocation();
+		
 
 		startGame();
 	}
@@ -88,14 +91,14 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		//   of the game. The smaller the number, the faster it goes.
 		switch(choice) {
 		case "Expert":
-			timer.setDelay(100);
+			timer.setDelay(300);
 			break;
 		
 		case "Moderate":
-			timer.setDelay(500);
+			timer.setDelay(400);
 			break;
 		case "Beginner":
-			timer.setDelay(1000);
+			timer.setDelay(500);
 			break;
 		
 			
@@ -151,12 +154,13 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		
 		//2. set the foodLocation variable equal to the Location object you just created.
 		Location loc = new Location (x, y);
-		
-		if(snake.isLocationOnSnake(loc)){
-			 x= rand.nextInt(WIDTH);
+		while(snake.isLocationOnSnake(loc)) {
+			x= rand.nextInt(WIDTH);
 			 y = rand.nextInt(HEIGHT);
 			  loc = new Location (x, y);
+			  
 		}
+		foodLocation = loc;
 		//   use the snake's isLocationOnSnake method to make sure you don't put the food on the snake
 		
 	}
@@ -176,8 +180,10 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 			setFoodLocation();
 			timer.restart();
 			
-		 defaut:
+		 default:
 			//need to work on this part. How do I exit the game?
+			 window.setVisible(false);
+			window.dispose();
 			break;
 		
 		
@@ -198,16 +204,24 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent e) {
 		//1. update the snake
 		snake.update();
+	
 
 		//2. if the snake is colliding with its own body 
 		//   or if the snake is out of bounds, call gameOver
 		if(snake.isHeadCollidingWithBody() || snake.isOutOfBounds()) {
+			if(snake.isHeadCollidingWithBody()) {
+				System.out.println("HEAD");
+			}
+			else {
+				System.out.println("SDF");
+			}
 			gameOver();
 		}
 
 		//3. if the location of the head is equal to the location of the food,
 		// 	 feed the snake and set the food location
-		if(snake.getHeadLocation() == foodLocation) {
+		if(snake.getHeadLocation().equals(foodLocation)) {
+			System.out.println("GOT FOOD");
 			snake.feed();
 			setFoodLocation();
 		}
